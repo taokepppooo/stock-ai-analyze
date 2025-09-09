@@ -1,7 +1,11 @@
 {
+  "compilerOptions": {
+    "lib": ["deno.ns", "dom", "dom.iterable", "es2022"]
+  },
+  "nodeModulesDir": "auto",
   "tasks": {
-    "dev": "deno run --allow-all npm:vite",
-    "build": "deno run --allow-all npm:vite build"
+    "dev": "deno run --allow-all --node-modules-dir npm:vite",
+    "build": "deno run --allow-all --node-modules-dir npm:vite build"
   },
   "imports": {
     "vue": "npm:vue@^3.5.13",
