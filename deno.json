@@ -10,6 +10,7 @@
   "imports": {
     "vue": "npm:vue@^3.5.13",
     "vite": "npm:vite@^6.0.3",
-    "@vitejs/plugin-vue": "npm:@vitejs/plugin-vue@^5.2.1"
+    "@vitejs/plugin-vue": "npm:@vitejs/plugin-vue@^5.2.1",
+    "@tauri-apps/plugin-sql": "npm:@tauri-apps/plugin-sql@^2"
   }
 }
