@@ -22,4 +22,6 @@
 `cargo install tauri-cli`
 `rustup default stable`
 `deno install`
+`([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)`
+`netsh int ip reset; netsh winsock reset`
 运行 `cargo tauri dev`
