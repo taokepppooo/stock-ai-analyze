@@ -107,9 +107,38 @@ const getStockHistory = async (symbol: string) => {
   }
 };
 
+// 数据库状态信息
+const databaseStatus = ref<Record<string, string>>({});
+
+// 获取数据库状态
+const fetchDatabaseStatus = async () => {
+  try {
+    const result = await invoke<Record<string, string>>('get_database_info');
+    databaseStatus.value = result;
+    console.log('Database status:', result);
+  } catch (error) {
+    console.error('获取数据库状态失败:', error);
+  }
+};
+
+// 触发数据库文件创建
+const triggerDatabaseCreation = async () => {
+  try {
+    const result = await invoke<string>('create_database_files');
+    console.log('Database creation result:', result);
+    alert('数据库文件创建: ' + result);
+    // 重新获取数据库状态
+    await fetchDatabaseStatus();
+  } catch (error) {
+    console.error('数据库文件创建失败:', error);
+    alert('数据库文件创建失败: ' + error);
+  }
+};
+
 // 组件挂载时获取数据
 onMounted(() => {
   fetchStocks();
+  fetchDatabaseStatus();
 });
 </script>
 
@@ -152,9 +181,33 @@ onMounted(() => {
     <!-- 股票列表 -->
     <div class="stocks-section">
       <div class="section-header">
-        <button @click="fetchStocks" :disabled="loading" class="btn-secondary">
-          {{ loading ? '加载中...' : '刷新' }}
-        </button>
+        <h2>股票列表</h2>
+        <div class="header-buttons">
+          <button @click="fetchDatabaseStatus" class="btn-info">
+            刷新数据库状态
+          </button>
+          <button @click="fetchStocks" :disabled="loading" class="btn-secondary">
+            {{ loading ? '加载中...' : '刷新' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- 数据库状态显示 -->
+      <div class="database-status">
+        <h3>数据库连接状态</h3>
+        <div class="status-grid">
+          <div v-for="(status, dbName) in databaseStatus" :key="dbName" class="status-item">
+            <span class="db-name">{{ dbName }}:</span>
+            <span class="db-status" :class="{ 'status-connected': status === '已连接' }">
+              {{ status }}
+            </span>
+          </div>
+        </div>
+        <div class="database-actions">
+          <button @click="triggerDatabaseCreation" class="btn-info">
+            创建数据库文件
+          </button>
+        </div>
       </div>
       
       <div v-if="stocks.length === 0" class="empty-state">
@@ -242,6 +295,11 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .stocks-grid {
@@ -349,5 +407,65 @@ onMounted(() => {
   padding: 40px;
   background: #f9f9f9;
   border-radius: 8px;
+}
+
+/* 数据库状态样式 */
+.database-status {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.database-status h3 {
+  margin: 0 0 12px 0;
+  color: #495057;
+  font-size: 16px;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+}
+
+.db-name {
+  font-weight: 600;
+  color: #343a40;
+}
+
+.db-status {
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #ffc107;
+  color: #212529;
+}
+
+.status-connected {
+  background: #28a745 !important;
+  color: white !important;
+}
+
+.database-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.database-actions .btn-info {
+  font-size: 14px;
+  padding: 8px 16px;
 }
 </style>
