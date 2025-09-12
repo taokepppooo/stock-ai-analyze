@@ -1,3 +1,3 @@
-pub mod stock_api;
+pub mod stock;
 
-pub use stock_api::*;
+pub use stock::*;

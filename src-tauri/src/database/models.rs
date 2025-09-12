@@ -14,7 +14,7 @@ pub struct Stock {
     pub updated_at: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CreateStockRequest {
     pub symbol: String,
     pub name: String,
@@ -25,12 +25,14 @@ pub struct CreateStockRequest {
     pub sector: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UpdateStockRequest {
+    pub name: Option<String>,
     pub price: Option<f64>,
     pub change_percent: Option<f64>,
     pub volume: Option<i64>,
     pub market_cap: Option<f64>,
+    pub sector: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

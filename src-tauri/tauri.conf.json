@@ -22,11 +22,6 @@
       "csp": null
     }
   },
-  "plugins": {
-    "sql": {
-      "preload": ["sqlite:stock_data.db"]
-    }
-  },
   "bundle": {
     "active": true,
     "targets": "all",
